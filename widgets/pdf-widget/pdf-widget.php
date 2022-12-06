@@ -102,10 +102,10 @@ class Pdf_Widget extends Widget_Base {
 		$api_key = $pdf_widget__options['api_key_0'];
  ?>
  <div id="adobe-dc-view"></div>
- <script src="<?php echo esc_url(WP_PLUGIN_DIR . '/pdf-widget/widgets/pdf-widget/js/viewer.js'); ?>"></script>
+ <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
  <script type="text/javascript">
  	document.addEventListener("adobe_dc_view_sdk.ready", function(){
- 		var adobeDCView = new AdobeDC.View({clientId: "<?php echo wp_kses($api_key); ?>", divId: "adobe-dc-view"});
+ 		var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
  		adobeDCView.previewFile({
  			content:{location: {url: "<?php echo esc_url($settings['urltext']['url']) ?>"}},
  			metaData:{fileName: "Artikel.pdf"}
@@ -124,10 +124,10 @@ class Pdf_Widget extends Widget_Base {
 	protected function _content_template() {
 		?>
 		<div id="adobe-dc-view"></div>
-		<script src="<?php echo esc_url(WP_PLUGIN_DIR . '/pdf-widget/widgets/pdf-widget/js/viewer.js'); ?>"></script>
+		<script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
 		<script type="text/javascript">
 			document.addEventListener("adobe_dc_view_sdk.ready", function(){
-				var adobeDCView = new AdobeDC.View({clientId: "<?php echo wp_kses($api_key); ?>", divId: "adobe-dc-view"});
+				var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
 				adobeDCView.previewFile({
 					content:{location: {url: "{{{ settings.urltext.url }}}"}},
 					metaData:{fileName: "Artikel.pdf"}
