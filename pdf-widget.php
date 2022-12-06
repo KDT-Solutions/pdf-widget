@@ -10,7 +10,7 @@
  * Author URI:  https://kdt-solutions.ch
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * Requires at least: 5
+ * Requires at least: 5.0
  * Tested up to: 6.1.1
  * Requires PHP: 5.2.4
  *
