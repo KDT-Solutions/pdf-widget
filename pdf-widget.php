@@ -5,7 +5,7 @@
  * Plugin Name: PDF Widget
  * Plugin URI:  https://github.com/KDT-Solutions/pdf-widget
  * Description: Enables a Elementor Widget and [adobepdf] Shortcode to embed PDF's withe Adobe PDF Embed API.
- * Version:     1.0
+ * Version:     1.1
  * Author:      KDT-Solutions GmbH
  * Author URI:  https://kdt-solutions.ch
  * License:     GPLv2 or later
