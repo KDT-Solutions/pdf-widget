@@ -27,8 +27,6 @@ Use the Adobe Embed API with Elementor or with a Shortcode
 * MySQL version 5.6 or greater
 * WordPress Memory limit of 64 MB or greater (128 MB or higher is preferred)
 
-https://www.youtube.com/watch?v=Ypn6fltn_7s
-
 = Installation =
 
 1. Install using the WordPress built-in Plugin installer, or Extract the zip file and drop the contents in the `wp-content/plugins/` directory of your WordPress installation.
