@@ -45,5 +45,6 @@ Simply use [adobepdf link="<url_to_pdf_here>"]
 
 == Changelog ==
 
+= 1.1 Changes for Code Approval (Escaping Vars, including JS)
 
 = 1.0 First Release
