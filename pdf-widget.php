@@ -12,7 +12,7 @@
  * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Requires at least: 5.0
  * Tested up to: 6.1.1
- * Requires PHP: 5.2.4
+ * Requires PHP: 7.0
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License version 2, as published by the Free Software Foundation. You may NOT assume
@@ -35,7 +35,7 @@ final class Pdf_Widget {
 	 *
 	 * @var string The plugin version.
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.1';
 
 	/**
 	 * Minimum Elementor Version
@@ -53,7 +53,7 @@ final class Pdf_Widget {
 	 *
 	 * @var string Minimum PHP version required to run the plugin.
 	 */
-	const MINIMUM_PHP_VERSION = '6.0';
+	const MINIMUM_PHP_VERSION = '7.0';
 
 	/**
 	 * Instance
