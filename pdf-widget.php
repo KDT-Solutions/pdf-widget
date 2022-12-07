@@ -44,7 +44,7 @@ final class Pdf_Widget {
 	 *
 	 * @var string Minimum Elementor version required to run the plugin.
 	 */
-	const MINIMUM_ELEMENTOR_VERSION = '2.5.11';
+	const MINIMUM_ELEMENTOR_VERSION = '3.8.0';
 
 	/**
 	 * Minimum PHP Version
