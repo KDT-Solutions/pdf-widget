@@ -11,7 +11,9 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Use the Adobe Embed API with Elementor or with a Shortcode
+Use the Adobe Embed API with Elementor or with a Shortcode.
+
+This plugin uses the hosted Aobe Embed API and you need to sign up for a free account on https://documentcloud.adobe.com/dc-integration-creation-app-cdn/main.html?api=pdf-embed-api and register the domain you use to get an API key. Calls are made to https://documentcloud.adobe.com/view-sdk/viewer.js so please be aware of any data protection regulations. More info about the API can be found here: https://developer.adobe.com/document-services/docs/overview/pdf-embed-api/
 
 == Installation ==
 
