@@ -212,7 +212,7 @@ function adobe_pdf_embed($atts) {
     $pdf_widget__options = get_option( 'pdf_widget__option_name' ); // Array of All Options
     $api_key_0 = $pdf_widget__options['api_key_0']; // API Key
     $a = shortcode_atts($default, $atts);
-    return  '<div id="adobe-dc-view"></div><script src="https://documentcloud.adobe.com/view-sdk/viewer.js"></script> <script type="text/javascript">document.addEventListener("adobe_dc_view_sdk.ready", function(){ 		var adobeDCView = new AdobeDC.View({clientId: "'.$api_key_0.'", divId: "adobe-dc-view"}); 		adobeDCView.previewFile({ 			content:{location: {url: "'.$a['link'].'"}}, 			metaData:{fileName: "Artikel.pdf"} 		}, {embedMode: "IN_LINE"}); 	}); </script>';
+    return  '<div id="adobe-dc-view"></div><script src="https://documentcloud.adobe.com/view-sdk/viewer.js"></script> <script type="text/javascript">document.addEventListener("adobe_dc_view_sdk.ready", function(){ 		var adobeDCView = new AdobeDC.View({clientId: "'.esc_html($api_key_0).'", divId: "adobe-dc-view"}); 		adobeDCView.previewFile({ 			content:{location: {url: "'.$a['link'].'"}}, 			metaData:{fileName: "Artikel.pdf"} 		}, {embedMode: "IN_LINE"}); 	}); </script>';
 
 }
 add_shortcode('adobepdf', 'adobe_pdf_embed');
