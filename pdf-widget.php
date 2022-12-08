@@ -212,8 +212,7 @@ function adobe_pdf_embed($atts) {
     $pdf_widget__options = get_option( 'pdf_widget__option_name' ); // Array of All Options
     $api_key_0 = $pdf_widget__options['api_key_0']; // API Key
     $a = shortcode_atts($default, $atts);
-		$adobescript = wp_get_script_tag(array( 'src' => esc_url( 'https://documentservices.adobe.com/view-sdk/viewer.js' ) ) );
-    return  '<div id="adobe-dc-view"></div><?php echo $adobescript; ?><script type="text/javascript">document.addEventListener("adobe_dc_view_sdk.ready", function(){ 		var adobeDCView = new AdobeDC.View({clientId: "'.esc_html($api_key_0).'", divId: "adobe-dc-view"}); 		adobeDCView.previewFile({ 			content:{location: {url: "'.$a['link'].'"}}, 			metaData:{fileName: "'.basename($a['link']).'"} 		}, {embedMode: "IN_LINE"}); 	}); </script>';
+    return  '<div id="adobe-dc-view"></div><script type="text/javascript">document.addEventListener("adobe_dc_view_sdk.ready", function(){ 		var adobeDCView = new AdobeDC.View({clientId: "'.esc_html($api_key_0).'", divId: "adobe-dc-view"}); 		adobeDCView.previewFile({ 			content:{location: {url: "'.$a['link'].'"}}, 			metaData:{fileName: "'.basename($a['link']).'"} 		}, {embedMode: "IN_LINE"}); 	}); </script>';
 
 }
 add_shortcode('adobepdf', 'adobe_pdf_embed');
@@ -325,3 +324,8 @@ function pw_settings_link( $links ) {
 	);
 	return $links;
 }//end pw_settings_link()
+
+function adobeviewer_script() {
+  wp_enqueue_script('adobeviewer', 'https://documentservices.adobe.com/view-sdk/viewer.js', array(), null, false);
+}
+add_action( 'wp_enqueue_scripts', 'adobeviewer_script' );
