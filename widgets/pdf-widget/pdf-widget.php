@@ -100,9 +100,10 @@ class Pdf_Widget extends Widget_Base {
 		 **/
 		$pdf_widget__options = get_option( 'pdf_widget__option_name' );
 		$api_key = $pdf_widget__options['api_key_0'];
+		$adobescript = wp_get_script_tag(array( 'src' => esc_url( 'https://documentservices.adobe.com/view-sdk/viewer.js' ) ) );
+
  ?>
- <div id="adobe-dc-view"></div>
- <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
+ <div id="adobe-dc-view"></div><?php echo $adobescript; ?>
  <script type="text/javascript">
  	document.addEventListener("adobe_dc_view_sdk.ready", function(){
  		var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
@@ -123,8 +124,7 @@ class Pdf_Widget extends Widget_Base {
 	 */
 	protected function _content_template() {
 		?>
-		<div id="adobe-dc-view"></div>
-		<script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
+		<div id="adobe-dc-view"></div><?php echo $adobescript; ?>
 		<script type="text/javascript">
 			document.addEventListener("adobe_dc_view_sdk.ready", function(){
 				var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
