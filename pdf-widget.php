@@ -5,7 +5,7 @@
  * Plugin Name: PDF Widget
  * Plugin URI:  https://github.com/KDT-Solutions/pdf-widget
  * Description: Enables a Elementor Widget and [adobepdf] Shortcode to embed PDF's withe Adobe PDF Embed API.
- * Version:     1.1
+ * Version:     1.2
  * Author:      KDT-Solutions GmbH
  * Author URI:  https://kdt-solutions.ch
  * License:     GPLv2 or later
@@ -35,7 +35,7 @@ final class Pdf_Widget {
 	 *
 	 * @var string The plugin version.
 	 */
-	const VERSION = '1.1';
+	const VERSION = '1.2';
 
 	/**
 	 * Minimum Elementor Version
@@ -212,7 +212,8 @@ function adobe_pdf_embed($atts) {
     $pdf_widget__options = get_option( 'pdf_widget__option_name' ); // Array of All Options
     $api_key_0 = $pdf_widget__options['api_key_0']; // API Key
     $a = shortcode_atts($default, $atts);
-    return  '<div id="adobe-dc-view"></div><script src="https://documentcloud.adobe.com/view-sdk/viewer.js"></script> <script type="text/javascript">document.addEventListener("adobe_dc_view_sdk.ready", function(){ 		var adobeDCView = new AdobeDC.View({clientId: "'.esc_html($api_key_0).'", divId: "adobe-dc-view"}); 		adobeDCView.previewFile({ 			content:{location: {url: "'.$a['link'].'"}}, 			metaData:{fileName: "Artikel.pdf"} 		}, {embedMode: "IN_LINE"}); 	}); </script>';
+		$adobescript = wp_get_script_tag(array( 'src' => esc_url( 'https://documentservices.adobe.com/view-sdk/viewer.js' ) ) );
+    return  '<div id="adobe-dc-view"></div><?php echo $adobescript; ?><script type="text/javascript">document.addEventListener("adobe_dc_view_sdk.ready", function(){ 		var adobeDCView = new AdobeDC.View({clientId: "'.esc_html($api_key_0).'", divId: "adobe-dc-view"}); 		adobeDCView.previewFile({ 			content:{location: {url: "'.$a['link'].'"}}, 			metaData:{fileName: "'.basename($a['link']).'"} 		}, {embedMode: "IN_LINE"}); 	}); </script>';
 
 }
 add_shortcode('adobepdf', 'adobe_pdf_embed');
