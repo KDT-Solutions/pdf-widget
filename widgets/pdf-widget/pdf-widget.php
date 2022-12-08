@@ -109,7 +109,7 @@ class Pdf_Widget extends Widget_Base {
  		var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
  		adobeDCView.previewFile({
  			content:{location: {url: "<?php echo esc_url($settings['urltext']['url']) ?>"}},
- 			metaData:{fileName: "Artikel.pdf"}
+ 			metaData:{fileName: "<?php echo esc_html(basename($settings['urltext']['url'])) ?>"}
  		}, {embedMode: "IN_LINE"});
  	});
  </script>
@@ -130,7 +130,7 @@ class Pdf_Widget extends Widget_Base {
 				var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
 				adobeDCView.previewFile({
 					content:{location: {url: "{{{ settings.urltext.url }}}"}},
-					metaData:{fileName: "Artikel.pdf"}
+					metaData:{fileName: "file.pdf"}
 				}, {embedMode: "IN_LINE"});
 			});
 		</script>
