@@ -4,7 +4,7 @@ Tags: pdf, elementor, adobe
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,8 @@ Simply use [adobepdf link="<url_to_pdf_here>"]
 
 
 == Changelog ==
+
+= 1.2 Changed inclusion of JS and added dynamic file name for download
 
 = 1.1 Changes for Code Approval (Escaping Vars and minor bugfixes)
 
