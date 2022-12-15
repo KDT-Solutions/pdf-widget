@@ -42,7 +42,7 @@ This plugin uses the hosted Aobe Embed API and you need to sign up for a free ac
 
 **How do I use the shortcode?**
 
-Simply use [adobepdf link="<url_to_pdf_here>"]
+Simply use [adobepdf link="url_to_pdf_here"]
 
 
 == Changelog ==
