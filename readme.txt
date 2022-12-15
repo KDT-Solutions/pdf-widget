@@ -47,6 +47,9 @@ Simply use [adobepdf link="url_to_pdf_here"]
 
 == Changelog ==
 
+= 1.3 =
+* changed description and minor code fixes
+
 = 1.2 =
 * Changed inclusion of JS and added dynamic file name for download
 
