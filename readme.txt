@@ -4,7 +4,7 @@ Tags: pdf, elementor, adobe
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 1.4
+Stable tag: 1.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,9 +46,6 @@ Simply use [adobepdf link="url_to_pdf_here"]
 
 
 == Changelog ==
-
-= 1.4 =
-* upgraded to Modern PDF viewer integration (Adobe)
 
 = 1.3 =
 * changed description and minor code fixes
