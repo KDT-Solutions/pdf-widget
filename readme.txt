@@ -4,7 +4,7 @@ Tags: pdf, elementor, adobe, pdf viewer, embed
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.4
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,9 @@ Only for the widget. The shortcode works without Elementor.
 Check that the client ID is entered under Settings -> PDF Widget and that the domain of your website is registered for this client ID at Adobe. The PDF must be reachable by URL.
 
 == Changelog ==
+
+= 1.4.1 =
+* Compatibility with WordPress 5.0 to 5.0.2 restored (no longer uses wp_unique_id())
 
 = 1.4 =
 * Viewer script loaded from the current Adobe address (acrobatservices.adobe.com) and only on pages with a PDF

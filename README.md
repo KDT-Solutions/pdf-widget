@@ -3,7 +3,7 @@
 WordPress plugin to embed PDF files with the [Adobe PDF Embed API](https://developer.adobe.com/document-services/docs/overview/pdf-embed-api/), as Elementor widget or with the `[adobepdf]` shortcode.
 
 - WordPress.org: https://wordpress.org/plugins/pdf-widget/
-- Current version: 1.4 (tested up to WordPress 7.1, Elementor 3.8+ / 4.x)
+- Current version: 1.4.1 (tested up to WordPress 7.1, Elementor 3.8+ / 4.x)
 
 ## Features
 

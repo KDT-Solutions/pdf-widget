@@ -3,7 +3,7 @@
  * Plugin Name:       PDF Widget
  * Plugin URI:        https://wordpress.org/plugins/pdf-widget/
  * Description:       Elementor widget and [adobepdf] shortcode to embed PDF files with the Adobe PDF Embed API.
- * Version:           1.4
+ * Version:           1.4.1
  * Author:            KDT-Solutions GmbH
  * Author URI:        https://kdt-solutions.ch
  * License:           GPLv2 or later
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'PDF_WIDGET_VERSION', '1.4' );
+define( 'PDF_WIDGET_VERSION', '1.4.1' );
 define( 'PDF_WIDGET_FILE', __FILE__ );
 define( 'PDF_WIDGET_OPTION', 'pdf_widget__option_name' );
 
@@ -45,6 +45,14 @@ function pdf_widget_embed_modes() {
 		'FULL_WINDOW'     => __( 'Full Window', 'pdf-widget' ),
 		'LIGHT_BOX'       => __( 'Lightbox', 'pdf-widget' ),
 	);
+}
+
+/**
+ * Returns a unique number for each viewer on the page (wp_unique_id() only exists since WP 5.0.3).
+ */
+function pdf_widget_next_id() {
+	static $id = 0;
+	return (string) ++$id;
 }
 
 /**
@@ -93,7 +101,7 @@ function pdf_widget_render_viewer( $url, $args = array() ) {
 		$embed_mode = 'IN_LINE';
 	}
 
-	$div_id = 'adobe-dc-view-' . ( '' !== $args['id'] ? sanitize_html_class( $args['id'] ) : wp_unique_id() );
+	$div_id = 'adobe-dc-view-' . ( '' !== $args['id'] ? sanitize_html_class( $args['id'] ) : pdf_widget_next_id() );
 
 	$path      = wp_parse_url( $url, PHP_URL_PATH );
 	$file_name = $path ? rawurldecode( wp_basename( $path ) ) : 'document.pdf';
