@@ -1,19 +1,67 @@
 name: Deploy to WordPress.org
 
-# Runs when a tag (e.g. 1.4) is pushed. The tag must match "Stable tag" in readme.txt.
+# Runs automatically on every push to main:
+# - "Stable tag" in readme.txt is a version that is not yet on WordPress.org
+#   -> full release (trunk + tags/<version>) and a matching Git tag.
+# - The version already exists -> only readme.txt and .wordpress-org assets are
+#   updated (e.g. a new "Tested up to" without a new release).
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: wporg-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: WordPress Plugin Deploy
+
+      - name: Read version
+        id: version
+        run: |
+          STABLE=$(grep -i '^Stable tag:' readme.txt | head -1 | sed 's/^[^:]*:[[:space:]]*//' | tr -d '\r[:space:]')
+          HEADER=$(grep -i '^[[:space:]]*\*[[:space:]]*Version:' pdf-widget.php | head -1 | sed 's/.*Version:[[:space:]]*//' | tr -d '\r[:space:]')
+          CONST=$(grep "define( 'PDF_WIDGET_VERSION'" pdf-widget.php | sed "s/.*, '\([^']*\)'.*/\1/")
+          echo "Stable tag: $STABLE, plugin header: $HEADER, constant: $CONST"
+          if [ "$STABLE" != "$HEADER" ] || [ "$STABLE" != "$CONST" ]; then
+            echo "::error::Version mismatch between readme.txt ($STABLE), plugin header ($HEADER) and PDF_WIDGET_VERSION ($CONST)"
+            exit 1
+          fi
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' "https://plugins.svn.wordpress.org/pdf-widget/tags/$STABLE/")
+          if [ "$CODE" = "200" ]; then echo "release=false" >> "$GITHUB_OUTPUT"; else echo "release=true" >> "$GITHUB_OUTPUT"; fi
+          echo "version=$STABLE" >> "$GITHUB_OUTPUT"
+
+      - name: Install SVN
+        run: sudo apt-get update -q && sudo apt-get install -y -q subversion
+
+      - name: Release new version
+        if: steps.version.outputs.release == 'true'
         uses: 10up/action-wordpress-plugin-deploy@stable
         env:
           SVN_USERNAME: KDT-Solutions
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: pdf-widget
+          VERSION: ${{ steps.version.outputs.version }}
+
+      - name: Create Git tag
+        if: steps.version.outputs.release == 'true'
+        run: |
+          git tag "${{ steps.version.outputs.version }}" || true
+          git push origin "${{ steps.version.outputs.version }}" || true
+
+      - name: Update readme and assets only
+        if: steps.version.outputs.release == 'false'
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: KDT-Solutions
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: pdf-widget
+          IGNORE_OTHER_FILES: true

@@ -36,11 +36,12 @@ WordPress plugin to embed PDF files with the [Adobe PDF Embed API](https://devel
 
 ## Release to WordPress.org
 
-The plugin is published via SVN (`https://plugins.svn.wordpress.org/pdf-widget`).
-The workflow `.github/workflows/deploy.yml` deploys automatically when a tag is pushed:
+`.github/workflows/deploy.yml` runs on every push to `main`:
 
-1. Raise the version in `pdf-widget.php` (header and `PDF_WIDGET_VERSION`) and `Stable tag` in `readme.txt`, add a changelog entry.
-2. Commit, then push a tag with the same version, e.g. `git tag 1.5 && git push origin 1.5`.
+- If `Stable tag` in `readme.txt` is a version that is not yet on WordPress.org, it is released via SVN (trunk and `tags/<version>`) and a matching Git tag is created.
+- If the version already exists, only `readme.txt` and the assets in `.wordpress-org/` are updated (e.g. a new "Tested up to").
+
+For a new version, raise it in `pdf-widget.php` (header and `PDF_WIDGET_VERSION`) and `Stable tag` in `readme.txt` and add a changelog entry. The workflow stops if the three numbers differ.
 
 Required repository secret: `SVN_PASSWORD` (SVN password from the WordPress.org profile, "Account & Security").
 
