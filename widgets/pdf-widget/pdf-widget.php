@@ -1,138 +1,149 @@
 <?php
 namespace Elementor;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 class Pdf_Widget extends Widget_Base {
 
-	/**
-	 * Get widget name.
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @return string Widget name.
-	 */
 	public function get_name() {
 		return 'pdf-widget';
 	}
 
-	/**
-	 * Get widget title.
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @return string Widget title.
-	 */
 	public function get_title() {
 		return 'PDF Widget';
 	}
 
-	/**
-	 * Get widget icon.
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @return string Widget icon.
-	 */
 	public function get_icon() {
 		return 'eicon-document-file';
 	}
 
-	/**
-	 * Get widget categories.
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @return array Widget categories.
-	 */
 	public function get_categories() {
-		return [ 'basic' ];
+		return array( 'basic' );
 	}
 
-	/**
-	 * Register widget controls.
-	 * @since 1.0.0
-	 * @access protected
-	 */
-	protected function _register_controls() {
+	public function get_keywords() {
+		return array( 'pdf', 'adobe', 'document', 'embed' );
+	}
 
-		/**
-		 *  Here you can add your controls. The controls below are only examples.
-		 *  Check this: https://developers.elementor.com/elementor-controls/
-		 *
-		 **/
+	public function get_script_depends() {
+		return array( 'adobeviewer' );
+	}
 
+	protected function register_controls() {
 
-		$this->end_controls_section();
 		$this->start_controls_section(
 			'content_section',
-			[
+			array(
 				'label' => __( 'Datei', 'pdf-widget' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			)
+		);
+
+		// Control ID "urltext" is kept for backwards compatibility with existing pages.
+		$this->add_control(
+			'urltext',
+			array(
+				'label'   => __( 'PDF URL', 'pdf-widget' ),
+				'type'    => Controls_Manager::URL,
+				'dynamic' => array(
+					'active' => true,
+				),
+			)
 		);
 
 		$this->add_control(
-			'urltext',
-			[
-				'label' => __( 'URLtext', 'pdf-widget' ),
-				'type' => \Elementor\Controls_Manager::URL,
-				'dynamic' => [
-					'active' => true,
-				],
-			]
+			'embed_mode',
+			array(
+				'label'   => __( 'Embed Mode', 'pdf-widget' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'IN_LINE',
+				'options' => pdf_widget_embed_modes(),
+			)
 		);
 
+		$this->add_control(
+			'height',
+			array(
+				'label'      => __( 'Height', 'pdf-widget' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'vh' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 200,
+						'max' => 2000,
+					),
+					'vh' => array(
+						'min' => 10,
+						'max' => 100,
+					),
+				),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 600,
+				),
+				'condition'  => array(
+					'embed_mode' => array( 'SIZED_CONTAINER', 'FULL_WINDOW' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'show_download',
+			array(
+				'label'        => __( 'Download button', 'pdf-widget' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => array(
+					'embed_mode!' => 'LIGHT_BOX',
+				),
+			)
+		);
+
+		$this->add_control(
+			'show_print',
+			array(
+				'label'        => __( 'Print button', 'pdf-widget' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => array(
+					'embed_mode!' => 'LIGHT_BOX',
+				),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
-	/**
-	 * Render widget output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 */
 	protected function render() {
-
 		$settings = $this->get_settings_for_display();
 
-		/**
-		 *  Here you can output your control data and build your content.
-		 **/
-		$pdf_widget__options = get_option( 'pdf_widget__option_name' );
-		$api_key = $pdf_widget__options['api_key_0'];
+		$url = isset( $settings['urltext']['url'] ) ? $settings['urltext']['url'] : '';
+		if ( '' === trim( (string) $url ) ) {
+			if ( Plugin::$instance->editor->is_edit_mode() ) {
+				echo '<div class="pdf-widget-placeholder">' . esc_html__( 'Please select a PDF file.', 'pdf-widget' ) . '</div>';
+			}
+			return;
+		}
 
- ?>
- <div id="adobe-dc-view">
- <script type="text/javascript">
- 	document.addEventListener("adobe_dc_view_sdk.ready", function(){
- 		var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
- 		adobeDCView.previewFile({
- 			content:{location: {url: "<?php echo esc_url($settings['urltext']['url']) ?>"}},
- 			metaData:{fileName: "<?php echo esc_html(basename($settings['urltext']['url'])) ?>"}
- 		}, {embedMode: "IN_LINE"});
- 	});
- </script>
- <?php
+		$height = '';
+		if ( ! empty( $settings['height']['size'] ) ) {
+			$height = $settings['height']['size'] . ( ! empty( $settings['height']['unit'] ) ? $settings['height']['unit'] : 'px' );
+		}
 
-	}
-
-	/**
-	 * Written as a Backbone JavaScript template and used to generate the live preview.
-	 * With JS templates we don’t really need to retrieve the data using a special function, its done by Elementor for us.
-	 * The data from the controls stored in the settings variable.
-	 */
-	protected function _content_template() {
-		?>
-		<div id="adobe-dc-view"></div>
-		<script type="text/javascript">
-			document.addEventListener("adobe_dc_view_sdk.ready", function(){
-				var adobeDCView = new AdobeDC.View({clientId: "<?php echo esc_html($api_key); ?>", divId: "adobe-dc-view"});
-				adobeDCView.previewFile({
-					content:{location: {url: "{{{ settings.urltext.url }}}"}},
-					metaData:{fileName: "file.pdf"}
-				}, {embedMode: "IN_LINE"});
-			});
-		</script>
-		<?php
+		// Output is escaped in pdf_widget_render_viewer().
+		echo pdf_widget_render_viewer( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$url,
+			array(
+				'embed_mode'    => ! empty( $settings['embed_mode'] ) ? $settings['embed_mode'] : 'IN_LINE',
+				'show_download' => ! isset( $settings['show_download'] ) || 'yes' === $settings['show_download'],
+				'show_print'    => ! isset( $settings['show_print'] ) || 'yes' === $settings['show_print'],
+				'height'        => $height,
+				'id'            => $this->get_id(),
+			)
+		);
 	}
 }

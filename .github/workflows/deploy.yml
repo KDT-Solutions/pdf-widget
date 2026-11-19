@@ -1,0 +1,19 @@
+name: Deploy to WordPress.org
+
+# Runs when a tag (e.g. 1.4) is pushed. The tag must match "Stable tag" in readme.txt.
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: KDT-Solutions
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: pdf-widget
