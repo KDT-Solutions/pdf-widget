@@ -2,7 +2,7 @@
 Contributors: kdt-solutions
 Tags: pdf, elementor, adobe, pdf viewer, embed
 Requires at least: 5.0
-Tested up to: 7.1
+Tested up to: 7.2
 Requires PHP: 7.0
 Stable tag: 1.4.1
 License: GPLv2 or later
